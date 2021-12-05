@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const randomId = require('random-id');
 const app = express(),
       bodyParser = require("body-parser");
@@ -27,7 +28,7 @@ const users = [
 ];
 
 app.use(bodyParser.json());
-app.use(express.static(process.cwd() + '/my-app/dist'));
+app.use(express.static(path.join(__dirname, '../my-app/dist')));
 
 app.get('/api/users', (req, res) => {
   console.log('api/users called!!!!!!!')
@@ -35,6 +36,7 @@ app.get('/api/users', (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
+  console.log(req);
   const user = req.body.user;
   user.id = randomId(10);
   console.log('Adding user:::::', user);
@@ -43,7 +45,8 @@ app.post('/api/user', (req, res) => {
 });
 
 app.get('/', (req,res) => {
-  res.sendFile(process.cwd() + '/my-app/dist/index.html');
+  console.log(path.join(__dirname, '../my-app/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../my-app/build/index.html'));
 });
 
 app.listen(port, () => {
